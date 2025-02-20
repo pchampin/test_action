@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - minutes/*.html
 
 jobs:
   minutes_to_gh:
@@ -31,12 +33,17 @@ jobs:
       with:
         path: ./repo
 
-    - name: List minutes
-      run: ls ./repo/minutes
+    - name: Add list of new files in env
+      working-directory: ./repo
+      run: echo "NEW_FILES=$(git diff --name-only ${{ github.event.after }} ${{ github.event.before }})" >> $GITHUB_ENV
 
     - name: Run application
       working-directory: ./m2g
-      run: cargo run -- --dry-run --help
+      run: |
+        for i in $NEW_FILES; do
+          echo $i
+          echo cargo run -- manual --dry-run -h
+        done
       env:
         M2G_TOKEN: ${{ github.token }}
         M2G_LOG_LEVEL: debug
