@@ -8,6 +8,11 @@ on:
 jobs:
   minutes_to_gh:
     runs-on: ubuntu-latest
+    env:
+      M2G_TOKEN: ${{ github.token }}
+      M2G_LOG_LEVEL: debug
+      M2G_CHANNEL: pmwg
+      M2G_GROUP: wg/pm
 
     steps:
     - name: Set up Rust
@@ -40,10 +45,5 @@ jobs:
       with:
         command: run
         args: -- --dry-run --help
-      env:
-        M2G_TOKEN: ${{ github.token }}
-        M2G_LOG_LEVEL: debug
-        M2G_CHANNEL: pmwg
-        M2G_GROUP: wg/pm
         
         
