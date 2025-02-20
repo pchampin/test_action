@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  minutes_to_gh:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
 
     - name: Build minutes_to_gh
       working-directory: ./m2g
-      run: cargo build --release --verbose
+      run: cargo build --verbose
 
     - name: Checkout this repository
       uses: actions/checkout@v2
@@ -35,7 +35,15 @@ jobs:
       run: ls ./repo/minutes
 
     - name: Run application
+      working-directory: ./m2g
       uses: actions-rs/cargo@v1
       with:
         command: run
-        args: --release -- --help
+        args: -- --dry-run --help
+      env:
+        M2G_TOKEN: ${{ github.token }}
+        M2G_LOG_LEVEL: debug
+        M2G_CHANNEL: pmwg
+        M2G_GROUP: wg/pm
+        
+        
