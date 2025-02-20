@@ -1,0 +1,41 @@
+name: Minutes 2 Github
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Checkout minutes_to_gh
+      uses: actions/checkout@v2
+      with:
+        repository: pchampin/minutes_to_gh
+        path: ./m2g
+
+    - name: Build minutes_to_gh
+      working-directory: ./m2g
+      run: cargo build --release --verbose
+
+    - name: Checkout this repository
+      uses: actions/checkout@v2
+      with:
+        path: ./repo
+
+    - name: List minutes
+      run: ls ./repo/minutes
+
+    - name: Run application
+      uses: actions-rs/cargo@v1
+      with:
+        command: run
+        args: --release -- --help
