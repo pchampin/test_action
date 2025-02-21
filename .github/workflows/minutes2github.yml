@@ -36,10 +36,7 @@ jobs:
     - name: Add list of new files in env
       working-directory: ./repo
       run: |
-          git diff HEAD^ --name-status
-          echo ----
-          git diff --name-status ${{ github.event.before }} ${{ github.event.before }}
-          echo ----
+          git diff --name-status ${{ github.event.before }} ${{ github.event.after }}
           echo "NEW_FILES=$(git diff --name-status ${{ github.event.before }} ${{ github.event.after }})" >> $GITHUB_ENV
 
     - name: Run application
