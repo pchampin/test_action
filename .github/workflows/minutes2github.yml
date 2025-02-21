@@ -2,8 +2,8 @@ name: Minutes 2 Github
 
 env:
   # customize the env variables below
-  MINUTES_URL_BASE: https://pchampin.github.io/test_action/minutes  # without trailing slash
-  MINUTES_REPO_PATH: minutes  # without trailing slash
+  MINUTES_URL_BASE: "https://pchampin.github.io/test_action/minutes"  # without trailing slash
+  MINUTES_REPO_PATH: "minutes"  # without trailing slash
   M2G_CHANNEL: pmwg
   M2G_GROUP: wg/pm        
 
@@ -18,7 +18,7 @@ on:
     branches:
       - main
     paths:
-      - ${{ env.MINUTES_REPO_PATH + '/*.html' }}
+      - ${{ format('{0}/*.html', env.MINUTES_REPO_PATH }}
 
 jobs:
   minutes_to_gh:
@@ -32,7 +32,7 @@ jobs:
         fetch-depth: 0
 
     - name: Add list of new files to env
-      working-directory: ${{ './repo/' + env.MINUTES_REPO_PATH }}
+      working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
       run: |
           NEW_FILES=$(
             git diff --name-status ${{ github.event.before }} ${{ github.event.after }} \
