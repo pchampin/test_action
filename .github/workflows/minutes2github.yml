@@ -64,7 +64,7 @@ jobs:
         if [ "$NEW_FILES" != "" ]; then
           for FILE in $NEW_FILES; do
             echo $FILE
-            cargo run -- manual --repository pchampin/test_action --dry-run --file $FILE --url $URL_BASE$FILE --transcript
+            cargo run -- manual --repository pchampin/test_action --dry-run --file ../repo/$FILE --url $URL_BASE$FILE --transcript
           done
         fi
         
