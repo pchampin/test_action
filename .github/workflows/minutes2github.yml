@@ -1,11 +1,19 @@
 name: Minutes 2 Github
 
+env:
+  MINUTES_DIR: "minutes"  # must be consistent with on.push.paths below
+  URL_BASE: https://pchampin.github.io/test_action/minutes/
+  M2G_TOKEN: ${{ github.token }}
+  M2G_LOG_LEVEL: debug
+  M2G_CHANNEL: pmwg
+  M2G_GROUP: wg/pm        
+
 on:
   push:
     branches:
       - main
-    # paths: ## uncomment this when everything works
-    #  - minutes/*.html
+    paths: ## uncomment this when everything works
+      - minutes/*.html
 
 jobs:
   minutes_to_gh:
@@ -34,24 +42,24 @@ jobs:
         path: ./repo
         fetch-depth: 0
 
-    - name: Add list of new files in env
+    - name: Add list of new files to env
       working-directory: ./repo
       run: |
-          git status
-          git log
-          git diff --name-status ${{ github.event.before }} ${{ github.event.after }}
-          echo "NEW_FILES=$(git diff --name-status ${{ github.event.before }} ${{ github.event.after }})" >> $GITHUB_ENV
+          NEW_FILES=$(
+            git diff --name-status ${{ github.event.before }} ${{ github.event.after }}
+            | grep -e '^A\t'$MINUTES'.*\.html$'
+            | sed "s/^A.$MINUTES//"
+          )
+          echo $NEW_FILES
+          echo "NEW_FILES=$NEW_FILES" >> $GITHUB_ENV
 
-    - name: Run application
+    - name: Run minutes_to_gh for each new file
       working-directory: ./m2g
       run: |
-        for i in $NEW_FILES; do
-          echo $i
-          echo cargo run -- manual --dry-run -h
-        done
-      env:
-        M2G_TOKEN: ${{ github.token }}
-        M2G_LOG_LEVEL: debug
-        M2G_CHANNEL: pmwg
-        M2G_GROUP: wg/pm        
+        if [ "$NEW_FILES" != "" ]; then
+          for i in $NEW_FILES; do
+            echo $i
+            echo cargo run -- manual --dry-run -h
+          done
+        fi
         
