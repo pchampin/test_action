@@ -66,6 +66,6 @@ jobs:
       run: |
         for FILE in $NEW_FILES; do
           echo -------- $FILE
-          cargo run -- manual --repository pchampin/test_action --file ../repo/$FILE --url $URL_BASE$FILE --transcript
+          cargo run -- manual --file ../repo/$FILE --url $URL_BASE$FILE --transcript
         done
         
