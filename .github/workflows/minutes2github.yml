@@ -18,8 +18,12 @@ on:
     branches:
       - main
     paths:
-      - 'minutes/*.html'
-      # - ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
+      - '**.html'
+      # NB: the path above could be constrained to the directory containing the minutes
+      # but the environment variable MINUTES_REPO_PATH is not available here...
+      # (env variables are only available in the jobs' steps).
+      # So to keep this script DRY, we do not filter on the subdirectory.
+      # Anyway, the script will stop at the 2nd step of no minutes were added.
 
 jobs:
   minutes_to_gh:
@@ -32,13 +36,6 @@ jobs:
       with:
         path: ./repo
         fetch-depth: 0
-
-    - name: Debug
-      working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
-      run: |
-        pwd
-        ls
-        echo ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
 
     - name: Add list of new files to env
       working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
