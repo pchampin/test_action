@@ -2,14 +2,15 @@ name: Minutes 2 Github
 
 env:
   # customize the env variables below
-  URL_BASE: https://pchampin.github.io/test_action/
+  MINUTES_URL_BASE: https://pchampin.github.io/test_action/minutes  # without trailing slash
+  MINUTES_REPO_PATH: minutes  # without trailing slash
   M2G_CHANNEL: pmwg
   M2G_GROUP: wg/pm        
 
-  # IMPORTANT: you must also
-  # - check the parameter on.push.paths below
-  # - set up the secret M2G_TOKEN with a token authorized to comment on isses
+  # IMPORTANT: you must also set up the secret M2G_TOKEN with a token authorized to comment on isses
   M2G_TOKEN: ${{ secrets.M2G_TOKEN }}
+
+  # season to your taste
   M2G_LOG_LEVEL: trace
 
 on:
@@ -17,7 +18,7 @@ on:
     branches:
       - main
     paths:
-      - minutes/*.html
+      - ${{ env.MINUTES_REPO_PATH + '/*.html' }}
 
 jobs:
   minutes_to_gh:
@@ -31,7 +32,7 @@ jobs:
         fetch-depth: 0
 
     - name: Add list of new files to env
-      working-directory: ./repo
+      working-directory: ${{ './repo/' + env.MINUTES_REPO_PATH }}
       run: |
           NEW_FILES=$(
             git diff --name-status ${{ github.event.before }} ${{ github.event.after }} \
@@ -66,6 +67,6 @@ jobs:
       run: |
         for FILE in $NEW_FILES; do
           echo -------- $FILE
-          cargo run -- manual --file ../repo/$FILE --url $URL_BASE$FILE --transcript
+          cargo run -- manual --file ../repo/$MINUTES_REPO_PATH/$FILE --url $MINUTES_URL_BASE/$FILE --transcript
         done
         
