@@ -46,8 +46,8 @@ jobs:
       working-directory: ./repo
       run: |
           NEW_FILES=$(
-            git diff --name-status ${{ github.event.before }} ${{ github.event.after }}
-            | grep  '^A\s\+'$MINUTES'/.*\.html$'
+            git diff --name-status ${{ github.event.before }} ${{ github.event.after }} \
+            | grep  '^A\s\+'$MINUTES'/.*\.html$' \
             | sed 's!^A\s\+'$MINUTES'/!!'
           )
           echo $NEW_FILES
