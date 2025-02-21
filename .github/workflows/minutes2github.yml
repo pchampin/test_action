@@ -17,8 +17,9 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
+    paths:
+      - 'minutes/*.html'
+      # - ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
 
 jobs:
   minutes_to_gh:
