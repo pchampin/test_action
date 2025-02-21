@@ -32,6 +32,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: ./repo
+        fetch-depth: 0
 
     - name: Add list of new files in env
       working-directory: ./repo
