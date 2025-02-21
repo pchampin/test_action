@@ -20,10 +20,10 @@ on:
     paths:
       - '**.html'
       # NB: the path above could be constrained to the directory containing the minutes
-      # but the environment variable MINUTES_REPO_PATH is not available here...
+      # but the environment variable MINUTES_REPO_PATH is not available here
       # (env variables are only available in the jobs' steps).
       # So to keep this script DRY, we do not filter on the subdirectory.
-      # Anyway, the script will stop at the 2nd step of no minutes were added.
+      # Anyway, the script will stop after the 2nd step if no minutes were added.
 
 jobs:
   minutes_to_gh:
