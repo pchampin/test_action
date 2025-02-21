@@ -9,7 +9,7 @@ env:
   # IMPORTANT: you must also
   # - check the parameter on.push.paths below
   # - set up the secret M2G_TOKEN with a token authorized to comment on isses
-  M2G_TOKEN: ${{ secret.M2G_TOKEN }}
+  M2G_TOKEN: ${{ secrets.M2G_TOKEN }}
   M2G_LOG_LEVEL: trace
 
 on:
