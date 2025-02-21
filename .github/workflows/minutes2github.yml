@@ -30,9 +30,7 @@ jobs:
       working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
       run: |
         echo A ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
-        echo B ${{ env.MINUTES_REPO_PATH + '/*.html' }}
         echo C ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
-        echo D ${{ './repo/' + env.MINUTES_REPO_PATH }}
 
     - name: Checkout this repository
       uses: actions/checkout@v2
