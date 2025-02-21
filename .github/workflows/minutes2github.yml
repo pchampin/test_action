@@ -4,29 +4,29 @@ on:
   push:
     branches:
       - main
-    paths:
-      - minutes/*.html
+    # paths: ## uncomment this when everything works
+    #  - minutes/*.html
 
 jobs:
   minutes_to_gh:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        override: true
+    #- name: Set up Rust
+    #  uses: actions-rs/toolchain@v1
+    #  with:
+    #    toolchain: stable
+    #    override: true
 
-    - name: Checkout minutes_to_gh
-      uses: actions/checkout@v2
-      with:
-        repository: pchampin/minutes_to_gh
-        path: ./m2g
+    #- name: Checkout minutes_to_gh
+    #  uses: actions/checkout@v2
+    #  with:
+    #    repository: pchampin/minutes_to_gh
+    #    path: ./m2g
 
-    - name: Build minutes_to_gh
-      working-directory: ./m2g
-      run: cargo build --verbose
+    #- name: Build minutes_to_gh
+    #  working-directory: ./m2g
+    #  run: cargo build --verbose
 
     - name: Checkout this repository
       uses: actions/checkout@v2
@@ -35,7 +35,12 @@ jobs:
 
     - name: Add list of new files in env
       working-directory: ./repo
-      run: echo "NEW_FILES=$(git diff --name-only ${{ github.event.after }} ${{ github.event.before }})" >> $GITHUB_ENV
+      run: |
+          git diff HEAD^ --name-status
+          echo ----
+          git diff --name-status ${{ github.event.before }} ${{ github.event.before }}
+          echo ----
+          echo "NEW_FILES=$(git diff --name-status ${{ github.event.before }} ${{ github.event.after }})" >> $GITHUB_ENV
 
     - name: Run application
       working-directory: ./m2g
