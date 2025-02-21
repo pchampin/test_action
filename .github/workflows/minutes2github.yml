@@ -17,8 +17,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
+    # paths:
+    #   - ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
 
 jobs:
   minutes_to_gh:
@@ -31,6 +31,13 @@ jobs:
       with:
         path: ./repo
         fetch-depth: 0
+
+    - name: Debug
+      working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
+      run: |
+        pwd
+        ls
+        echo ${{ format('{0}/*.html', env.MINUTES_REPO_PATH) }}
 
     - name: Add list of new files to env
       working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
