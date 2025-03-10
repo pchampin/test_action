@@ -6,6 +6,8 @@ env:
   MINUTES_REPO_PATH: "minutes"  # without trailing slash
   M2G_CHANNEL: pmwg
   M2G_GROUP: wg/pm        
+  M2G_TRANSCRIPT: "true"  # must be "true" or "false"
+  M2G_EXTRA_OPTS: --repository pchampin/text_action
 
   # IMPORTANT: you must also set up the secret M2G_TOKEN with a token authorized to comment on isses
   M2G_TOKEN: ${{ secrets.M2G_TOKEN }}
@@ -73,6 +75,6 @@ jobs:
       run: |
         for FILE in $NEW_FILES; do
           echo -------- $FILE
-          cargo run -- manual --file ../repo/$MINUTES_REPO_PATH/$FILE --url $MINUTES_URL_BASE/$FILE --transcript
+          cargo run -- manual --file ../repo/$MINUTES_REPO_PATH/$FILE --url $MINUTES_URL_BASE/$FILE $M2G_EXTRA_OPTS
         done
         
