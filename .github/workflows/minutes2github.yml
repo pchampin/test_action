@@ -7,7 +7,7 @@ env:
   M2G_CHANNEL: pmwg
   M2G_GROUP: wg/pm        
   M2G_TRANSCRIPT: "true"  # must be "true" or "false"
-  M2G_EXTRA_OPTS: --repository pchampin/text_action
+  M2G_EXTRA_OPTS: --repository pchampin/test_action
 
   # IMPORTANT: you must also set up the secret M2G_TOKEN with a token authorized to comment on isses
   M2G_TOKEN: ${{ secrets.M2G_TOKEN }}
