@@ -47,12 +47,11 @@ jobs:
 
             git diff --name-status ${{ github.event.before }} ${{ github.event.after }} \
             | grep  '^[AM]\s\+${{ env.MINUTES_REPO_PATH }}/.*\.html$' \
-            | sed 's!^[AM]\s\+${{ env.MINUTES_REPO_PATH }}/!!'
+            | sed 's!^[AM]\s\+${{ env.MINUTES_REPO_PATH }}/!!' \
+            | tee /dev/stderr
 
             echo ".EOF"
           } >> "$GITHUB_ENV"
-
-          echo "NEW_FILES:\n${{ env.NEW_FILES }}"
 
     - name: Set up Rust
       if: ${{ env.NEW_FILES }}
