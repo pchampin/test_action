@@ -42,13 +42,17 @@ jobs:
     - name: Add list of new (and modified) files to env
       working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
       run: |
-          NEW_FILES=$(
+          {
+            echo "NEW_FILES<<.EOF"
+
             git diff --name-status ${{ github.event.before }} ${{ github.event.after }} \
             | grep  '^[AM]\s\+${{ env.MINUTES_REPO_PATH }}/.*\.html$' \
             | sed 's!^[AM]\s\+${{ env.MINUTES_REPO_PATH }}/!!'
-          )
-          echo -e "NEW_FILES=\n" $NEW_FILES
-          echo "NEW_FILES=$NEW_FILES" | sed 's/ /\\ /' >> $GITHUB_ENV
+
+            echo ".EOF"
+          } >> "$GITHUB_ENV"
+
+          echo "NEW_FILES:\n${{ env.NEW_FILES }}"
 
     - name: Set up Rust
       if: ${{ env.NEW_FILES }}
