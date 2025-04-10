@@ -34,7 +34,7 @@ jobs:
 
     steps:
     - name: Checkout this repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         path: ./repo
         fetch-depth: 0
@@ -56,13 +56,10 @@ jobs:
     - name: Set up Rust
       if: ${{ env.NEW_FILES }}
       uses: dtolnay/rust-toolchain@stable
-      with:
-        toolchain: stable
-        override: true
 
     - name: Checkout minutes_to_gh
       if: ${{ env.NEW_FILES }}
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: pchampin/minutes_to_gh
         path: ./m2g
