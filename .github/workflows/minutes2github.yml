@@ -18,11 +18,11 @@ jobs:
 
     steps:
     - name: Link minutes to github
-      uses: pchampin/action_m2g@v1
+      uses: pchampin/action_m2g@main
       with:
         minutes-url-base: "https://pchampin.github.io/test_action/minutes"
         minutes-repo-path: "minutes"
         m2g-token: ${{ secrets.M2G_TOKEN }}
-        m2g-channel: did
+        m2g-channel: rdf-star
         m2g-transcript: true
         m2g-extra-options: --repository pchampin/test_action
