@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Link minutes to github
-      uses: pchampin/action_m2g@7eb598b6c
+      uses: pchampin/action_m2g@main
       with:
         minutes-url-base: "https://pchampin.github.io/test_action/minutes"
         minutes-repo-path: "minutes"
