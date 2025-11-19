@@ -31,50 +31,14 @@ jobs:
   minutes_to_gh:
     runs-on: ubuntu-latest
 
-
     steps:
-    - name: Checkout this repository
-      uses: actions/checkout@v4
+    - name: Link minutes to github
+      uses: pchampin/action_m2g@main
       with:
-        path: ./repo
-        fetch-depth: 0
-
-    - name: Add list of new (and modified) files to env
-      working-directory: ${{ format('./repo/{0}', env.MINUTES_REPO_PATH) }}
-      run: |
-          {
-            echo "NEW_FILES<<.EOF"
-
-            git diff --name-status ${{ github.event.before }} ${{ github.event.after }} \
-            | grep  '^[AM]\s\+${{ env.MINUTES_REPO_PATH }}/.*\.html$' \
-            | sed 's!^[AM]\s\+${{ env.MINUTES_REPO_PATH }}/!!' \
-            | tee /dev/stderr
-
-            echo ".EOF"
-          } >> "$GITHUB_ENV"
-
-    - name: Set up Rust
-      if: ${{ env.NEW_FILES }}
-      uses: dtolnay/rust-toolchain@stable
-
-    - name: Checkout minutes_to_gh
-      if: ${{ env.NEW_FILES }}
-      uses: actions/checkout@v4
-      with:
-        repository: pchampin/minutes_to_gh
-        path: ./m2g
-
-    - name: Build minutes_to_gh
-      if: ${{ env.NEW_FILES }}
-      working-directory: ./m2g
-      run: cargo build --verbose
-
-    - name: Run minutes_to_gh for each new file
-      if: ${{ env.NEW_FILES }}
-      working-directory: ./m2g
-      run: |
-        for FILE in $NEW_FILES; do
-          echo -------- $FILE
-          cargo run -- manual --file ../repo/$MINUTES_REPO_PATH/$FILE --url $MINUTES_URL_BASE/$FILE $M2G_EXTRA_OPTS
-        done
-        
+        minutes-base-url: "https://pchampin.github.io/test_action/minutes"  # without trailing slash
+        minutes-repo-path: "minutes"  # without trailing slash
+        m2g-channel: pmwg
+        m2g-group: wg/pm        
+        m2g-transcript: "true"  # must be "true" or "false"
+        m2g-log-level: trace
+        m2g-extra-options: --repository pchampin/test_action
